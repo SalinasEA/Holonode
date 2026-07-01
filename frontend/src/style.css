@@ -1,0 +1,947 @@
+/* Root styles */
+:root {
+  font-family: Sans-Serif, serif;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  --hover-color: #0056b3;
+  --background-color: #242424;
+  --secondary-background-color: #111;
+  --transparent-color: rgba(0, 0, 0, 0.8);
+  --sidebar-width: 200px;
+  --visible-outline: 5px;
+}
+
+/* Removes default page spacing and prevents scrollbars */
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Basic Navbar Styling and adds background with hex first as fallback */
+.navbar {
+  display: flex;
+  background: #242424;
+  position: fixed;
+  top: 0;
+  width: var(--sidebar-width);
+  right: calc(-.168 * var(--sidebar-width));
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0;
+  z-index: 3;
+  overflow: visible;
+  opacity: 0.98;
+}
+
+/* Establishes positioning context for dropdown menus within each nav item */
+.navbar li {
+  position: relative;
+}
+
+/* Styles nav links as white, block-level elements with padding and no underline */
+.navbar a {
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 15px 20px;
+  display: block;
+  transition: background-color 0.3s ease-in-out;
+  overflow: visible;
+}
+
+/* Highlights nav links with a blue background on hover */
+.navbar a:hover {
+  background: var(--hover-color);
+}
+
+/* Hides the dropdown menu by default and positions it below the parent with a smooth slide-down transition */
+.game-dropdown-menu {
+  position: absolute;
+  background: var(--background-color);
+  list-style: none;
+  padding: 0;
+  min-width: 200px;
+  top: 102%;
+  left: 0;
+  opacity: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  visibility: hidden;
+  transform: scaleY(0);
+  transform-origin: top;
+  z-index: 4;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+
+/* Adds vertical padding to dropdown links for easier clicking */
+.game-dropdown-menu li a {
+  padding: 10px 20px;
+}
+
+/* Show the menu on hover */
+.game-dropdown:hover .game-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: scaleY(1);
+}
+
+/* Styles the login button as an inline flex element with no border or background */
+.login-modal-btn {
+  display: flex;
+  align-items: center;
+  background: none;
+  justify-content: center;
+  border: none;
+  padding: 12px 20px;
+  transition: background-color 0.3s ease-in-out;
+  color: #FFFFFF;
+}
+
+/* Hides the logout button by default and styles it as a transparent, aligned navbar item */
+.logout-btn {
+  display: none;
+  align-items: center;
+  background: none;
+  justify-content: center;
+  border: none;
+  padding: 12px 20px;
+  transition: background-color 0.3s ease-in-out;
+  color: #FFFFFF;
+}
+
+/* Rounds and highlights the login button with a blue background on hover */
+.login-modal-btn:hover,
+.logout-btn:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+/* Makes buttons interactive and responsive to clicks or taps */
+button {
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  touch-action: manipulation;
+}
+
+/* Shrinks active buttons and removes their shadow while pressed */
+button:active {
+  transform: scale(0.95);
+  box-shadow: none;
+}
+
+/* Defines the hidden fixed sidebar panel and its slide-in transition */
+.sidebar {
+  height: 100%;
+  width: var(--sidebar-width);
+  position: fixed;
+  padding: 10px;
+  z-index: 1;
+  top: 0;
+  left: calc(-1.05 * var(--sidebar-width));
+  background-color: var(--secondary-background-color);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  overflow: visible;
+}
+
+/* Animates the sidebar when it opens or closes */
+.sidebar.animated {
+  transition: 0.5s;
+  opacity: 0.98;
+}
+
+/* Moves the sidebar into view when it is open */
+.sidebar.open {
+  left: 0;
+}
+
+/* Centers the search bar text and makes it span the full sidebar width */
+.search-bar {
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+/* Adds spacing, borders, and a smooth hover transition to individual search results */
+.search-result-item {
+  display: flex;
+  flex-direction: column;
+  background: none;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  margin-bottom: 10px;
+  padding: 5px;
+  width: calc(50% - 5px);
+  box-sizing: border-box;
+}
+
+/* Changes the background color of a search result when hovered over */
+.search-result-item:hover {
+  background-color: var(--hover-color);
+}
+
+/* Highlights the search results selected equipment item button */
+.search-result-item.selected {
+  background-color: var(--hover-color);
+  font-weight: bold;
+}
+
+/* Constrains search results equipment item thumbnail images to a consistent size */
+.search-result-item img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border: none !important;
+}
+
+/* Styles the item name label beneath each search results equipment thumbnail */
+.search-result-item p {
+  font-size: 12px;
+  margin: 4px 0 0 0;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+/* Hides sidebar content until the sidebar is opened */
+.sidebar .content {
+  opacity: 0;
+  transition: 0.2s;
+  padding-top: 60px;
+}
+
+/* Fades in sidebar content when the sidebar is open */
+.sidebar.open .content {
+  opacity: 1;
+}
+
+/* Positions the sidebar toggle button on the outer edge of the sidebar with a transition */
+.sidebar-toggle-btn {
+  position: absolute;
+  border-radius: 50%;
+  top: 45%;
+  right: -30px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Rounds and highlights the sidebar toggle button when hovered */
+.sidebar-toggle-btn:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+/* Allows sidebar content to scroll vertically within the full sidebar height */
+.sidebar-content {
+  overflow-y: auto;
+  height: 100%;
+  padding-right: 10px;
+}
+
+/* Arranges equipment slot sections in a wrapping flex layout with spacing */
+.equipment-slot-panel > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Adds spacing below the first equipment slot section */
+.equipment-slot-first-half {
+  margin-bottom: 10px;
+}
+
+/* Sizes equipment slot buttons into two columns with outlined transparent styling */
+.equipment-slot-panel > div button {
+  flex: 0 0 calc(50% - 5px);
+  box-sizing: border-box;
+  background: none;
+  border: #FFFFFF 2px solid;
+}
+
+/* Highlights equipment slot buttons when hovered */
+.equipment-slot-panel > div button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Highlights the selected equipment slot button */
+.equipment-slot-panel > div button.selected {
+  background-color: var(--hover-color);
+  font-weight: bold;
+}
+
+/* Defines the fade-in and fade-out scale animation for the selected equipment panel */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* Hides the selected equipment panel by default */
+.selected-equipment-slot-panel {
+  display: none;
+}
+
+/* Applies fade-in animation when the selected equipment panel becomes visible */
+.selected-equipment-slot-panel.visible {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Applies fade-out animation when the selected equipment panel is hiding */
+.selected-equipment-slot-panel.hiding {
+  animation: fadeOut 0.2s ease;
+}
+
+/* Shows selected equipment images as interactive and highlights them when hovered */
+.selected-equipment-slot-panel img:hover {
+  cursor: pointer;
+  background-color: var(--hover-color);
+}
+
+/* Shrinks active buttons and removes their shadow while pressed */
+.selected-equipment-slot-panel img:active {
+  transform: scale(0.95);
+  box-shadow: none;
+}
+
+/* Styles equipment item buttons in the selection panel */
+.equipment-item-btn {
+  display: flex;
+  flex-direction: column;
+  background: none;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  margin-bottom: 10px;
+  padding: 5px;
+  width: calc(50% - 5px);
+  box-sizing: border-box;
+}
+
+/* Highlights equipment item buttons when hovered */
+.equipment-item-btn:hover {
+  background-color: var(--hover-color);
+}
+
+/* Highlights the selected equipment item button */
+.equipment-item-btn.selected {
+  background-color: var(--hover-color);
+  font-weight: bold;
+}
+
+/* Constrains equipment item thumbnail images to a consistent size */
+.equipment-item-btn img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border: none !important;
+}
+
+/* Styles the item name label beneath each equipment thumbnail */
+.equipment-item-btn p {
+  font-size: 12px;
+  margin: 4px 0 0 0;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+/* Styles the back button at the top of the equipment selection panel */
+.selected-equipment-back-btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+/* Highlights the back button when hovered */
+.selected-equipment-back-btn:hover {
+  background-color: var(--hover-color);
+}
+
+/* Constrains the back button icon to match slot button sizing */
+.selected-equipment-back-btn img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border: none !important;
+}
+
+/* Positions and structures the slide-out panel used for color selection */
+.color-panel {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 150px;
+  background-color: var(--secondary-background-color);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  z-index: 0;
+  padding: 20px 10px 10px;
+  box-sizing: border-box;
+  left: -150px;
+  transition: left 0.5s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Formats the interactive color wheel button into a circular layout */
+.color-wheel {
+  width: 100px;
+  height: 100px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  overflow: hidden;
+  -webkit-appearance: none;
+}
+
+/* Removes default padding and shapes the inner WebKit wrapper to match the circular button */
+.color-wheel::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 50%;
+}
+
+/* Strips the default border and forces the WebKit color preview area into a circle */
+.color-wheel::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+/* Strips the default border and forces the Firefox color preview area into a circle */
+.color-wheel::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+/* Centers and stacks the hexadecimal color value input and its labels */
+.color-hex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+
+/* Styles the text field used to manually input or display hex color codes */
+.color-hex-input {
+  width: 80px;
+  text-align: center;
+  background: var(--background-color);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #FFFFFF;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+/* Hides the back button by default, increases its size by 40px, and positions it at the top-left of the modal */
+.back-to-login-btn {
+  display: none;
+  position: absolute;
+  width: 40px;
+  height: auto;
+  border-radius: 50%;
+  top: 10px;
+  left: 10px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Rounds and highlights the back button with a blue background on hover */
+.back-to-login-btn:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+/* Increases the size of the close button by 40px and positions it at the top-right corner of the modal */
+.close-modal-btn {
+  position: absolute;
+  width: 40px;
+  height: auto;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Rounds and highlights the close button with a blue background on hover */
+.close-modal-btn:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+/* Styles the modal as a dark, rounded, padded card with a fixed width */
+.modal-card {
+  background-color: var(--background-color);
+  position: relative;
+  padding: 40px;
+  border-radius: 20px;
+  width: 400px;
+}
+
+/* Hides the overlay by default and anchors it as a full-screen fixed layer */
+.login-overlay {
+  display: none;
+  background-color: var(--transparent-color);
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9998;
+}
+
+/* Displays the overlay as a centered flex container with a fade-in animation */
+.login-overlay.visible {
+  display: flex;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Applies the fade-out animation when the overlay is closing */
+.login-overlay.hiding {
+  animation: fadeOut 0.2s ease;
+}
+
+/* Arranges login fields vertically centered using flexbox */
+.login-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Adds spacing, sizing, and pill-shaped styling to the login input fields */
+#login-username,
+#login-password {
+  margin: 15px;
+  padding: 5px;
+  width: 50%;
+  height: 20px;
+  border-radius: 20px;
+  border: 0;
+}
+
+/* Arranges the button container as a centered flex row with spacing and top margin */
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Stretches each button equally to fill the available container width */
+.button-container button {
+  flex: 1;
+}
+
+/* Adds top spacing and full width to the register button */
+.register-btn {
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Styles login and register buttons as borderless, padded, pill-shaped elements */
+.login-btn,
+.register-link-btn,
+.register-btn {
+  font-size: 16px;
+  padding: 15px;
+  border: 0;
+  border-radius: 20px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Highlights login and register buttons with a blue background on hover and changes cursor to pointer */
+.login-btn:hover,
+.register-link-btn:hover,
+.register-btn:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+/* Hides the register form by default and arranges its fields vertically centered */
+.register-form {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Adds spacing, sizing, and pill-shaped styling to the registration input fields */
+#register-username,
+#register-password,
+#register-confirm-password {
+  margin-top: 15px;
+  padding: 5px;
+  width: 50%;
+  height: 20px;
+  border-radius: 20px;
+  border: 0;
+}
+
+/* Changes font size, and top and bottom margin of messages to better fit the form */
+#username-message,
+#password-message,
+#confirm-password-message {
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+/* Hides the login/registration success/error message by default and centers it with top spacing */
+.login-modal-message,
+.register-modal-message {
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  display: none;
+}
+
+  /* Makes the avatar area fill the viewport height and available flex space */
+.avatar {
+  display: flex;
+  height: 100vh;
+  flex-grow: 1;
+}
+
+/* Changes the avatar area's pointer to indicate it's grabable */
+.avatar:hover {
+  cursor: grab;
+}
+
+/* Changes the avatar area's pointer to indicate it's grabbed */
+.avatar:active {
+  cursor: grabbing;
+}
+
+/* Positions the body type selector at the top center of the viewport with a high z-index */
+.body-type-selector {
+  position: absolute;
+  font-size: 16px;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+/* Arranges the label as a flex container with centered items and bottom spacing */
+.body-type-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+/* Arranges body type buttons horizontally with no gap between them */
+.body-type-button-group {
+  display: flex;
+  gap: 0;
+  opacity: 0.98;
+}
+
+/* Styles body type buttons with specific width and padding with semi-transparent borders alongside a smooth transition */
+.body-type-btn {
+  width: 80px;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 0;
+  background-color: var(--background-color);
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Changes the background to a light blue and makes the cursor change on hover */
+.body-type-btn:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+/* Rounds the left corners of the first button in the group */
+.body-type-btn:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+/* Rounds the right corners of the last button in the group */
+.body-type-btn:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+/* Highlights the active body type button with a blue background */
+.body-type-btn.active {
+  background-color: var(--hover-color);
+}
+
+/* Styles the fixed right sidebar */
+.right-sidebar {
+  height: 100%;
+  width: var(--sidebar-width);
+  position: fixed;
+  padding: 10px;
+  z-index: 4;
+  top: 0;
+  right: calc(-1.05 * var(--sidebar-width));
+  background-color: var(--secondary-background-color);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  overflow: visible;
+}
+
+/* Adds a smooth sliding transition to the sidebar when animated */
+.right-sidebar.animated {
+  transition: 0.5s;
+  opacity: 0.98;
+}
+
+/* Slides the right sidebar into view when the open class is applied */
+.right-sidebar.open {
+  right: 0;
+}
+
+/* Hides the right sidebar content until the sidebar is opened */
+.right-sidebar .content {
+  opacity: 0;
+  transition: 0.2s;
+  padding-top: 60px;
+}
+
+/* Fades in the right sidebar content when the sidebar is open */
+.right-sidebar.open .content {
+  opacity: 1;
+}
+
+/* Positions and shapes the circular toggle button on the left edge of the sidebar */
+.right-sidebar-toggle-btn {
+  position: absolute;
+  border-radius: 50%;
+  top: 45%;
+  left: -30px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Changes the toggle button background and cursor on hover */
+.right-sidebar-toggle-btn:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+/* Makes the right sidebar content scrollable */
+.right-sidebar-content {
+  overflow-y: auto;
+  height: 100%;
+  padding: 10px;
+}
+
+/* Centers and dims the login message text inside the right sidebar */
+.right-sidebar-login-message {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* Hides the outfit manager container by default */
+.outfit-manager {
+  display: none;
+  margin-top: 80%;
+}
+
+/* Displays the outfit manager container when it is marked visible */
+.outfit-manager.visible {
+  display: block;
+}
+
+/* Sets the font size and bottom spacing for the outfit name heading */
+.outfit-name {
+  font-size: 18px;
+  width: 100%;
+  padding: 20%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 5px;
+  color: #FFFFFF;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Spaces out and aligns the button group inside the outfit manager evenly */
+.outfit-manager-btn-group {
+  display: flex;
+  margin-top: 10%;
+  gap: 0;
+  width: 100%;
+}
+
+/* Load button - rounded left */
+.outfit-load-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: var(--background-color);
+  color: #FFFFFF;
+  border-radius: 10px 0 0 10px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Save button - rounded right */
+.outfit-save-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: var(--background-color);
+  color: #FFFFFF;
+  border-radius: 0 10px 10px 0;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Rounds the left corners of the load button to start the group row */
+.outfit-load-btn {
+  border-radius: 10px 0 0 10px;
+}
+
+/* Rounds the right corners of the save button to end the group row */
+.outfit-save-btn {
+  border-radius: 0 10px 10px 0;
+}
+
+/* Changes the background and cursor when hovering over the load or save buttons */
+.outfit-load-btn:hover,
+.outfit-save-btn:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+/* Allows the dropdown container to expand and positions the relative list inside it */
+.outfit-dropdown-container {
+  flex: 2;
+  position: relative;
+  width: 100%;
+  margin-top: 100%;
+}
+
+/* Styles the dropdown trigger button, clipping any overflowing outfit text with ellipses */
+.outfit-dropdown-btn {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 5px;
+  background-color: var(--background-color);
+  color: #FFFFFF;
+  transition: background-color 0.3s ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+/* Sets the absolute layout, scroll behavior, background, and borders for the outfit dropdown list */
+.outfit-dropdown-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  bottom: auto;
+  left: 0;
+  width: 100%;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: var(--secondary-background-color);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+/* Displays the dropdown list when it is marked visible */
+.outfit-dropdown-list.visible {
+  display: block;
+}
+
+/* Configures the layout padding, partial borders, background, and hover transition for the outfit delete button */
+.outfit-delete-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: none;
+  border-right: none;
+  background-color: var(--background-color);
+  color: #FFFFFF;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Changes the background to dark red and updates the cursor when hovering over the outfit delete button */
+.outfit-delete-btn:hover {
+  background-color: #8b0000;
+  cursor: pointer;
+}
+
+/* Rounds the left-side corners of the outfit load button */
+.outfit-load-btn {
+  border-radius: 10px 0 0 10px;
+}
+
+/* Rounds the right-side corners of the outfit save button */
+.outfit-save-btn {
+  border-radius: 0 10px 10px 0;
+}
+
+/* Changes the dropdown trigger button background and cursor on hover */
+.outfit-dropdown-btn:hover {
+  background-color: var(--hover-color);
+  cursor: pointer;
+}
+
+/* Formats individual list items with padding, a pointer cursor, and subtle bottom dividers */
+.outfit-dropdown-item {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Applies a background change when hovering over an outfit item */
+.outfit-dropdown-item:hover {
+  background-color: var(--hover-color);
+}
+
+/* Highlights the currently selected outfit item in the dropdown list */
+.outfit-dropdown-item.selected {
+  background-color: var(--hover-color);
+}
+
+/* Styles the outfit report button, stretching it to full width and setting its spacing, padding, borders, background, and hover transition */
+.outfit-report-btn {
+  width: 100%;
+  padding: 20%;
+  margin-top: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 5px;
+  background-color: var(--background-color);
+  color: #FFFFFF;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Changes the outfit report button background color when hovering over it */
+.outfit-report-btn:hover {
+  background-color: var(--hover-color);
+}

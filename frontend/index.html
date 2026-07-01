@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Holonode: Interactive Avatar Customizer</title>
+    <link rel="icon" type="image/svg" href="/favicon.svg" />
+    <style>
+      .loading-overlay {
+        position: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #242424;
+        transition: opacity 0.3s ease-in-out;
+        z-index: 9999;
+      }
+      /* Sizes the loading progress container and positioning context for its children */
+      .loading-progress-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+      }
+      /* Styles the loading progress ring's background track with no fill and a stroke */
+      .loading-progress-bg {
+        fill: none;
+        stroke: #363636;
+        stroke-width: 8;
+      }
+      /* Styles the loading progress ring's fill track with rotation and smooth fill animation */
+      .loading-progress-bar {
+        fill: none;
+        stroke: var(--hover-color);
+        stroke-width: 8;
+        stroke-dasharray: 314;
+        stroke-dashoffset: 314;
+        transform: rotate(-90deg);
+        transform-origin: 60px 60px;
+        transition: stroke-dashoffset 400ms ease-out;
+      }
+      /* Centers the loading progress percentage text in the middle of the progress ring */
+      .loading-progress-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 16px;
+        color: #FFFFFF;
+      }
+      /* Fades out the loading overlay to transparent when the page finishes loading */
+      .loading-overlay.fade-out {
+        opacity: 0;
+      }
+      body {
+        margin: 0;
+        background-color: #242424;
+      }
+      html {
+        background-color: #242424;
+      }
+      .navbar {
+        display: flex;
+        background: var(--background-color);
+        position: fixed;
+        top: 0;
+        right: 0;
+        list-style: none;
+        padding: 0;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading overlay -->
+    <div class="loading-overlay">
+      <div class="loading-progress-container">
+        <svg class="loading-progress-ring" width="120" height="120">
+          <circle class="loading-progress-bg" cx="60" cy="60" r="50"></circle>
+          <circle class="loading-progress-bar" cx="60" cy="60" r="50"></circle>
+        </svg>
+        <div class="loading-progress-text">0%</div>
+      </div>
+    </div>
+
+    <!-- Navigation bar -->
+    <nav>
+      <ul class="navbar">
+        <li class="game-dropdown">
+          <a href="">Games</a>
+          <ul class="game-dropdown-menu">
+            <li><a href="">Arelith</a></li>
+          </ul>
+        </li>
+        <!-- Login button -->
+        <li><button class="login-modal-btn" data-lucide="circle-user-round"></button></li>
+        <!-- Logout button -->
+        <li><button class="logout-btn" data-lucide="log-out"></button></li>
+      </ul>
+    </nav>
+
+    <!-- Login overlay -->
+    <div class="login-overlay">
+      <!-- Modal card for login/register form -->
+      <div class="modal-card">
+        <button class="back-to-login-btn" data-lucide="circle-user-round"></button>
+        <button class="close-modal-btn" data-lucide="x"></button>
+        <div class="login-form">
+          <h1>Login</h1>
+          <label for="login-username">Username:</label>
+          <input type="text" id="login-username" placeholder="Username" />
+          <label for="login-password">Password:</label>
+          <input type="password" id="login-password" placeholder="Password" />
+          <div class="button-container">
+            <button class="register-link-btn">Register</button>
+            <button class="login-btn">Login</button>
+          </div>
+          <!-- Login message -->
+          <div class="login-modal-message">
+
+          </div>
+        </div>
+        <div class="register-form">
+          <h1>Register</h1>
+          <label for="register-username">Username:</label>
+          <input type="text" id="register-username" placeholder="Username" />
+          <p id="username-message"></p>
+          <label for="register-password">Password:</label>
+          <input type="password" id="register-password" placeholder="Password" />
+          <p id="password-message"></p>
+          <label for="register-confirm-password">Confirm Password:</label>
+          <input type="password" id="register-confirm-password" placeholder="Confirm Password" />
+          <p id="confirm-password-message"></p>
+          <button class="register-btn">Register</button>
+          <!-- Register message -->
+          <div class="register-modal-message">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Left Sidebar (Equipment Manager) -->
+    <aside class="sidebar">
+      <!-- Sidebar button to open/close it with lucide icon attribute -->
+      <button class="sidebar-toggle-btn" data-lucide="chevron-right"></button>
+      <!-- Sidebar content -->
+      <div class="sidebar-content">
+        <!-- Search function to find equipment -->
+        <search>
+          <input class="search-bar" slot="search" name="q" placeholder="Search Clothing" aria-label="Search through all equipment"/>
+        </search>
+        <!-- Parent div to select equipment slot item -->
+        <div class="equipment-slot-panel">
+          <div class="equipment-slot-first-half">
+            <button class="equipment-slot-helmet-btn" data-slot="helmet">
+              <img src="/assets/icons/helmet.svg" alt="helmet icon">
+            </button>
+            <button class="equipment-slot-neck-btn" data-slot="neck">
+              <img src="/assets/icons/necklace.svg" alt="necklace icon">
+            </button>
+            <button class="equipment-slot-chest-btn" data-slot="chest">
+              <img src="/assets/icons/chest.svg" alt="chest icon">
+            </button>
+            <button class="equipment-slot-belt-btn" data-slot="belt">
+              <img src="/assets/icons/belt.svg" alt="belt icon">
+            </button>
+            <button class="equipment-slot-pelvis-btn" data-slot="pelvis">
+              <img src="/assets/icons/pelvis.svg" alt="pelvis icon">
+            </button>
+            <button class="equipment-slot-robe-btn" data-slot="robe">
+              <img src="/assets/icons/robe.svg" alt="robe icon">
+            </button>
+            <button class="equipment-slot-cloak-btn" data-slot="cloak">
+              <img src="/assets/icons/cloak.svg" alt="cloak icon">
+            </button>
+          </div>
+
+          <div class="equipment-slot-second-half">
+            <button class="equipment-slot-right-shoulder-btn" data-slot="rightShoulder">
+              <img src="/assets/icons/right-shoulder.svg" alt="right-shoulder icon">
+            </button>
+            <button class="equipment-slot-left-shoulder-btn" data-slot="leftShoulder">
+              <img src="/assets/icons/left-shoulder.svg" alt="left-shoulder icon">
+            </button>
+            <button class="equipment-slot-right-bicep-btn" data-slot="rightBicep">
+              <img src="/assets/icons/right-bicep.svg" alt="right-bicep icon">
+            </button>
+            <button class="equipment-slot-left-bicep-btn" data-slot="leftBicep">
+              <img src="/assets/icons/left-bicep.svg" alt="left-bicep icon">
+            </button>
+            <button class="equipment-slot-right-forearm-btn" data-slot="rightForearm">
+              <img src="/assets/icons/right-forearm.svg" alt="right-forearm icon">
+            </button>
+            <button class="equipment-slot-left-forearm-btn" data-slot="leftForearm">
+              <img src="/assets/icons/left-forearm.svg" alt="left-forearm icon">
+            </button>
+            <button class="equipment-slot-right-hand-btn" data-slot="rightHand">
+              <img src="/assets/icons/right-hand.svg" alt="right-hand icon">
+            </button>
+            <button class="equipment-slot-left-hand-btn" data-slot="leftHand">
+              <img src="/assets/icons/left-hand.svg" alt="left-hand icon">
+            </button>
+            <button class="equipment-slot-right-thigh-btn" data-slot="rightThigh">
+              <img src="/assets/icons/right-thigh.svg" alt="right-thigh icon">
+            </button>
+            <button class="equipment-slot-left-thigh-btn" data-slot="leftThigh">
+              <img src="/assets/icons/left-thigh.svg" alt="left-thigh icon">
+            </button>
+            <button class="equipment-slot-right-shin-btn" data-slot="rightShin">
+              <img src="/assets/icons/right-shin.svg" alt="right-shin icon">
+            </button>
+            <button class="equipment-slot-left-shin-btn" data-slot="leftShin">
+              <img src="/assets/icons/left-shin.svg" alt="left-shin icon">
+            </button>
+            <button class="equipment-slot-right-foot-btn" data-slot="rightFoot">
+              <img src="/assets/icons/right-foot.svg" alt="right-foot icon">
+            </button>
+            <button class="equipment-slot-left-foot-btn" data-slot="leftFoot">
+              <img src="/assets/icons/left-foot.svg" alt="left-foot icon">
+            </button>
+          </div>
+
+          <!-- Child div replaces parent after selecting equipment slot item -->
+          <div class="selected-equipment-slot-panel">
+          </div>
+        </div>
+      </div>
+
+    </aside>
+    <!-- Sibling of Left Sidebar (Color Picker) -->
+    <aside class="color-panel">
+      <!-- Title -->
+      <p class="color-panel-title">Color</p>
+      <!-- RGB color picker wheel -->
+      <label>
+        <input type="color" class="color-wheel" value="#ffffff">
+      </label>
+      <!-- Linked hex input -->
+      <div class="color-hex-container">
+        <label>Hex:
+          <input type="text" class="color-hex-input" value="#ffffff" maxlength="7">
+        </label>
+      </div>
+    </aside>
+
+    <!-- Avatar -->
+    <div class="avatar" style="background-color: #242424;">
+      <div class="body-type-selector">
+        <div class="body-type-label">Body Type</div>
+        <div class="body-type-button-group">
+          <button class="body-type-btn active" data-value="both">Both</button>
+          <button class="body-type-btn" data-value="type1">1</button>
+          <button class="body-type-btn" data-value="type2">2</button>
+        </div>
+      </div>
+      <script type="module" src="./src/main.ts"></script>
+    </div>
+
+  <!-- Right Sidebar (Outfit Manager) -->
+  <aside class="right-sidebar">
+    <!-- Toggle button on the left edge of the right sidebar -->
+    <button class="right-sidebar-toggle-btn" data-lucide="chevron-left"></button>
+
+    <!-- Right sidebar content -->
+    <div class="right-sidebar-content">
+      <!-- Login message (hidden when logged in) -->
+      <p class="right-sidebar-login-message">Login to save outfits</p>
+
+      <!-- Outfit manager (hidden when not logged in) -->
+      <div class="outfit-manager">
+        <!-- Outfit name input -->
+        <div class="outfit-name-container">
+          <label>
+            <input class="outfit-name" placeholder="Outfit Name" type="text">
+          </label>
+        </div>
+        <!-- Dropdown above the buttons -->
+        <div class="outfit-dropdown-container">
+          <button class="outfit-dropdown-btn">None</button>
+          <div class="outfit-dropdown-list"></div>
+        </div>
+        <!-- Three-part button: Load | Dropdown | Save -->
+        <div class="outfit-manager-btn-group">
+          <button class="outfit-load-btn">Load</button>
+          <button class="outfit-delete-btn">Delete</button>
+          <button class="outfit-save-btn">Save</button>
+        </div>
+        <!-- Generate report button -->
+        <button class="outfit-report-btn">Generate Report</button>
+      </div>
+    </div>
+  </aside>
+  </body>
+</html>
